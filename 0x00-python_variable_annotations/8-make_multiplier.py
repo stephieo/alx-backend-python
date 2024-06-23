@@ -7,5 +7,5 @@ def make_multiplier(multiplier: float) -> Callable[[float], float]:
     """multiplier function """
     def mult_res(mult: float) -> float:
         """sample function"""
-        return 2 * mult
+        return multiplier * mult
     return mult_res
