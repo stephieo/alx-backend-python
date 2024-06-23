@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """ simple type annotated function"""
-from math import floor
+import math
 
 
 def floor(n: float) -> int:
     """ floor function"""
-    return floor(n)
+    return math.floor(n)
