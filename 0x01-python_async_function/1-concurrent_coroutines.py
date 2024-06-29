@@ -9,5 +9,8 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     """ generates n instances of  wait_random"""
     tasks = [asyncio.create_task(wait_random(max_delay)) for i in range(n)]
 
-    results = await asyncio.gather(*tasks)
+    results = []
+    for task in asyncio.as_completed(tasks):
+        result = await task
+        results.append(result)
     return results
