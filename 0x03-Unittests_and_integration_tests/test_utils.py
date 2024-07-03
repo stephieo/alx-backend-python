@@ -2,7 +2,10 @@
 """ this module contains test cases for the  utils module"""
 import unittest
 from parameterized import parameterized
+from urllib import request
+from unittest.mock import patch
 access_nested_map = __import__('utils').access_nested_map
+get_json = __import__('utils').get_json
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -24,3 +27,16 @@ class TestAccessNestedMap(unittest.TestCase):
         """checks that function raises the expected errors"""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
+
+
+class TestGetJson(unittest.TestCase):
+    """ tests the utils.get_json function"""
+    @patch('requests.get')
+    def test_get_json(self, mock_get):
+        """ mocks the request.get methods"""
+        cases = [("http://example.com", {"payload": True}),
+                 ("http://holberton.io", {"payload": False})]
+        for resp, url in cases:
+            mock_get.return_value.json.return_value = resp
+            test = get_json(url)
+            self.assertEqual(test, resp)
