@@ -77,7 +77,6 @@ def insert_data(connection, data):
         
 
 
-
 connection = seed.connect_db()
 if connection:
     seed.create_database(connection)
