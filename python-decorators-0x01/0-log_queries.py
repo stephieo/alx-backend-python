@@ -8,8 +8,8 @@ from os import sys
 def log_queries(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        logging.getLogger(__name__)
-        logging.debug(sys.argv)
+        logger = logging.getLogger(__name__)
+        logger.warning(f"Using query: {kwargs['query']}")
         value = func(*args, **kwargs)
         return value
     return wrapper
@@ -25,4 +25,4 @@ def fetch_all_users(query):
 
 #### fetch users while logging the query
 users = fetch_all_users(query="SELECT * FROM users")
-print(users)
+print(users[0:4])
