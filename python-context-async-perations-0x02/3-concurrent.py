@@ -22,8 +22,8 @@ async def async_fetch_older_users():
 
 
 async def fetch_concurrently():
-    fetch_tasks = asyncio.gather(async_fetch_users(), async_fetch_older_users())
-    await fetch_tasks
+    fetch_tasks = awaitasyncio.gather(async_fetch_users(), async_fetch_older_users())
+
 
 # runs coroutines by running the entry point
 asyncio.run(fetch_concurrently())
