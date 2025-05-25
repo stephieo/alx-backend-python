@@ -10,6 +10,7 @@ async def async_fetch_users():
             print("Retrieving all users")
             async for row in cursor:
                 print(f"{row['user_id']}: {row['name']} - {row['age']}")
+            return await cursor.fetchall()
 
 
 async def async_fetch_older_users():
@@ -19,10 +20,11 @@ async def async_fetch_older_users():
             print("Retrieving users above 40")
             async for row in cursor:
                 print(f"{row['user_id']}: {row['name']} - {row['age']}")
+            return await cursor.fetchall()
 
 
 async def fetch_concurrently():
-    fetch_tasks = awaitasyncio.gather(async_fetch_users(), async_fetch_older_users())
+    fetch_tasks = await asyncio.gather(async_fetch_users(), async_fetch_older_users())
 
 
 # runs coroutines by running the entry point
