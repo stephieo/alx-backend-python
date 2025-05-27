@@ -18,7 +18,7 @@ def connect_to_prodev():
         conn.cursor().close()
     return conn
 
-
+#TODO: i'm not satisfied, multiple calls should not start streaming from the beginning
 def stream_users_in_batches(batch_size):
     offset = 0
     conn = connect_to_prodev()
