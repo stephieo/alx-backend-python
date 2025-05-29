@@ -69,6 +69,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'messaging_app.wsgi.application'
 
 
@@ -121,5 +122,10 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permsissions.SessionAuthentication'
+    ]
+}
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
