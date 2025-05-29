@@ -125,7 +125,7 @@ STATIC_URL = 'static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permsissions.SessionAuthentication'
+        'rest_framework.authentication.SessionAuthentication'
     ]
 }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
