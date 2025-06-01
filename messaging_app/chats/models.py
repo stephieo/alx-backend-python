@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser 
 import uuid
 
 # Create your models here.
-class User(models.Model):
+class User(AbstractUser):
+    #TODO: this  model shoul inherit from Abstract User
     USER_TYPES = [
         ('guest','Guest'),
         ('host', 'Host'),
