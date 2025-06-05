@@ -26,7 +26,13 @@ class User(AbstractUser):
         verbose_name_plural = 'Users'
         indexes = [models.Index(fields=['user_id', 'email'])]
 
-class MessageStatus():
+class Conversation(models.Model):
+    conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    participants = models.ManyToManyField(User, db_table='conversation_particpants')
+
+
+class MessageStatus(models.TextChoices):
     SENT = 'sent'
     DELIVERED = 'delivered'
     READ ='read'
@@ -35,13 +41,13 @@ class Message(models.Model):
 
     message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     conversation_id = models.ForeignKey(Conversation, on_delete=models.CASCADE)
-    sender_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipient_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    sender_id = models.ForeignKey(User, related_name="message_sender", on_delete=models.CASCADE)
+    recipient_id = models.ForeignKey(User, related_name='message_reciever', on_delete=models.CASCADE)
     message_body = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
         max_length=150,
-        choices=[status.value, status.name.capitalize() for  status in MessageStatus]
+        choices=MessageStatus,
     )
 
 
@@ -51,8 +57,4 @@ class Message(models.Model):
         verbose_name_plural = 'Messages'
 
 
-class Conversation(models.Model):
-    conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    participants = models.ManyToManyField(User, db_table='conversation_particpants')
 
