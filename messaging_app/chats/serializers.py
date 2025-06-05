@@ -2,23 +2,12 @@ from rest_framework import serializers
 from .models import User, Message, Conversation
 
 class UserSerializer(serializers.ModelSerializer):
-    
+    display_name = serializers.CharField()
     class Meta:
         model = User
-        fields = '__all__'
-        exclude = [
-            'groups', 'date_joined',
-            'is_active', 'is_superuser', 'user_permissions'
-        ]
+        fields = ['user_id', 'email', 'first_name', 'phone_number' 'last_name']
 # this  is a list of all the fields that should be (de)serialized( converted to/from JSON)
 # these are fields that should only be serialized i.e they won't work with POST or PUT requests 
-
-
-class ConversationSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Conversation
-        fields = '__all__'
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -26,3 +15,16 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = '__all__'
+        read_only_fields = ['message_id', 'sender', 'conversation']
+
+
+class ConversationSerializer(serializers.ModelSerializer):
+    messages = MessageSerializer(many=True, read_only=True) 
+    # the many  means that yo're expecting more tha one message to be returned
+    # the read-only means that messages are ntot required to create a conversation 
+
+    class Meta:
+        model = Conversation
+        fields = '__all__'
+        exclude =['conversation_id']
+
