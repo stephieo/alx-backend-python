@@ -34,9 +34,9 @@ class MessageStatus():
 class Message(models.Model):
 
     message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    conversation_id = models.ForeignKey('Conversation', on_delete=models.CASCADE)
-    sender_id = models.ForeignKey('User', on_delete=models.CASCADE)
-    recipient_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    conversation_id = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    sender_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipient_id = models.ForeignKey(User, on_delete=models.CASCADE)
     message_body = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(
@@ -53,6 +53,6 @@ class Message(models.Model):
 
 class Conversation(models.Model):
     conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    participants?
     created_at = models.DateTimeField(auto_now_add=True)
-    #TODO: figure out how many to many relationships work in django
+    participants = models.ManyToManyField(User, db_table='conversation_particpants')
+
