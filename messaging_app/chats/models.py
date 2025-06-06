@@ -10,7 +10,7 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email' # this is a unique identifier tha can be used for AUTHENTICATION (login); 
     REQUIRED_FIELDS = ['first_name', 'last_name', 'password']
     
-    username = None #NOTE: i can set this to first + lastname with save() later
+    username = None #NOTE: i can set this to first + lastname later
     
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) #The primary_key is for DATABASE use 
     email = models.EmailField(max_length=250, unique=True)

@@ -1,22 +1,29 @@
 from rest_framework import serializers
-from .models import User, Message, Conversation
+from .models import User, Message, Conversation, MessageStatus
 
 class UserSerializer(serializers.ModelSerializer):
     display_name = serializers.CharField(read_only=True, source='get_full_name')
     class Meta:
         model = User
-        fields = ['user_id', 'email',  'phone_number' 'last_name']
+        fields = ['user_id', 'email',  'phone_number', 'display_name']
 # this  is a list of all the fields that should be (de)serialized( converted to/from JSON)
         read_only_fields = ['user_id']
 # these are fields that should only be serialized i.e they won't work with POST or PUT requests 
 
 
-class MessageSerializer(serializers.ModelSerializer):
-    
+class MessageSerializer(serializers.ModelSerializer):    
     class Meta:
         model = Message
         fields = '__all__'
         read_only_fields = ['message_id', 'sender', 'conversation']
+
+    def validate_message_body(self, value):
+        if not value.strip():
+            raise serializers.ValidationError("message cannot be empty")
+    
+    def validate_status(self,value):
+        if value not in [choice[0] for choice in MessageStatus]:
+            raise serializers.ValidationError("invalid message status")
 
 
 class ConversationSerializer(serializers.ModelSerializer):
@@ -32,3 +39,7 @@ class ConversationSerializer(serializers.ModelSerializer):
     
     def get_conversation_title(self,obj):
         return f"{obj.participants[0].get_short_name} and {obj.participants[1].get_short_name}"
+    
+    def validate_participants(self, value):
+        if length(value) < 2:
+            raise serializers.ValidationError("conversation must have at least 2 participants")
