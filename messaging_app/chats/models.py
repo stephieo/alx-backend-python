@@ -40,7 +40,9 @@ class MessageStatus(models.TextChoices):
 class Message(models.Model):
 # django adds '_id' to fields when creating the db
     message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
+    # related_name is important if you want to access a relationship in the backward direction,
+    #  i.e finding all object that has x as a foreign key
     sender = models.ForeignKey(User, related_name="message_sender", on_delete=models.CASCADE)
     recipient = models.ForeignKey(User, related_name='message_reciever', on_delete=models.CASCADE)
     message_body = models.TextField()
