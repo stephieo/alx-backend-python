@@ -38,7 +38,8 @@ class ConversationSerializer(serializers.ModelSerializer):
         exclude =['conversation_id']
     
     def get_conversation_title(self,obj):
-        return f"{obj.participants[0].get_short_name} and {obj.participants[1].get_short_name}"
+        participants = obj.participants.all()
+        return f"{participants[0].get_short_name()} and {participants[1].get_short_name()}"
     
     def validate_participants(self, value):
         if length(value) < 2:
