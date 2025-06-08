@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from .permissions import IsParticipantofConversation
 # Create your views here.
-#TODO: override create methods for both message anc convo.
+#TODO: override create methods for both message and convo.
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all() #this is what is returned in a GET request 
     serializer_class = ConversationSerializer
