@@ -36,7 +36,7 @@ class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversation
         exclude =['conversation_id']
-    
+    # TODO: change logiv to include name for >2 participants
     def get_conversation_title(self,obj):
         participants = obj.participants.all()
         return f"{participants[0].get_short_name()} and {participants[1].get_short_name()}"
@@ -44,3 +44,5 @@ class ConversationSerializer(serializers.ModelSerializer):
     def validate_participants(self, value):
         if length(value) < 2:
             raise serializers.ValidationError("conversation must have at least 2 participants")
+    
+    
