@@ -27,8 +27,8 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class ConversationSerializer(serializers.ModelSerializer):
-    participants = UserSerializer(many=True, read_only=True)
     conversation_title = serializers.SerializerMethodField()
+    participants = UserSerializer(many=True, read_only=True)
     messages = MessageSerializer(many=True, read_only=True) 
     # the many  means that yo're expecting more tha one message to be returned
     # the read-only means that messages are ntot required to create a conversation 
