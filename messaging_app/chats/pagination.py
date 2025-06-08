@@ -2,9 +2,8 @@ from rest_framework import pagination
 
 
 class MessageResultsSetPagination(pagination.PageNumberPagination):
-    page_size = 1000
+    page_size = 20
     
-
     def get_paginated_response(self, data):
         return Response({
             'links': {
