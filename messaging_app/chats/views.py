@@ -6,14 +6,14 @@ from .filters import MessageFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from .permissions import IsConversationParticipant
+from .permissions import IsParticipantofConversation
 # Create your views here.
-
+#TODO: override create methods for both message anc convo.
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all() #this is what is returned in a GET request 
     serializer_class = ConversationSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated, IsConversationParticipant]
+    permission_classes = [IsAuthenticated, IsParticipantofConversation]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['conversation_id', 'participants__user_id']
 
