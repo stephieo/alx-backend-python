@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 # Create your views here.
 
-class ConversationViewset(viewsets.ModelViewSet):
+class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
