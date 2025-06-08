@@ -3,6 +3,7 @@ from rest_framework import viewsets, filters, status
 from .models import Conversation, Message, MessageStatus
 from .serializers import ConversationSerializer, MessageSerializer
 from .filters import MessageFilter
+from .pagination import MessageResultsSetPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -50,6 +51,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
+    pagination_classes = [MessageResultsSetPagination]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['status', 'recipient']
     filterset_class = MessageFilter
