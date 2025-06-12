@@ -12,7 +12,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         # Add additional data to the response
-        data['user_id'] = self.user.id
+        data['user_id'] = self.user.user_id
         return data
 
 class CustomTokenObtainPairView(TokenObtainPairView):
