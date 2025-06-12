@@ -4,6 +4,7 @@ import os
 from django.conf import settings
 
 class RequestLoggingMiddleware:
+
     def __init__(self, get_response):
         """
         Initialize middleware and setup logger.
@@ -46,4 +47,23 @@ class RequestLoggingMiddleware:
         '''any logic you want to add
           after the view has returned a response
           '''
+        return response
+
+class RestrictAccessByTimeMiddleware:
+    """
+    Middleware to restrict access to the application based on time.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        current_time = datetime.now().time()
+        start_time = datetime.strptime("06:00", "%H:%M").time()
+        end_time = datetime.strptime("23:00", "%H:%M").time()
+
+        if not (start_time <= current_time <= end_time):
+            return HttpResponse("Chat available from 6 AM to 11 PM only.", status=403)
+
+        response = self.get_response(request)
         return response
