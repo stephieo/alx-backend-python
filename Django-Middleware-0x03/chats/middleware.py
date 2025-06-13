@@ -59,11 +59,21 @@ class RestrictAccessByTimeMiddleware:
 
     def __call__(self, request):
         current_time = datetime.now().time()
-        start_time = datetime.strptime("06:00", "%H:%M").time()
-        end_time = datetime.strptime("23:00", "%H:%M").time()
+        start_time = datetime.strptime("09:00", "%H:%M").time()
+        end_time = datetime.strptime("18:00", "%H:%M").time()
 
         if not (start_time <= current_time <= end_time):
-            return HttpResponse("Chat available from 6 AM to 11 PM only.", status=403)
+            return HttpResponse("Chat available from 9 AM to 6 PM only.", status=403)
 
         response = self.get_response(request)
         return response
+    
+class OffensiveLanguageMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        self.user_ip_addr = request.META.get('REMOTE_ADDR')
+
+    
+
