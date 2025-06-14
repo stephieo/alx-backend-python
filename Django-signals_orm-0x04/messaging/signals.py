@@ -26,7 +26,7 @@ def save_message_history(sender, instance, **kwargs):
         saved_msg = Message.objects.get(pk=instance.pk)
         if saved_msg and instance.content != saved_msg.content:
             MessageHistory.objects.create(
-                user=instance.sender,
+                edited_by=instance.sender,
                 message=instance,
                 old_message_version= saved_msg.content,
             )

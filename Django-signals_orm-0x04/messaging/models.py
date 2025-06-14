@@ -39,7 +39,7 @@ class Notification(models.Model):
 
 class MessageHistory(models.Model):
     history_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='message_history')
+    edited_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='message_history')
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='history')
     old_message_version = models.TextField()
     edited_at = models.DateTimeField(auto_now_add=True)
