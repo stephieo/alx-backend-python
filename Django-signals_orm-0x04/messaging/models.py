@@ -32,7 +32,7 @@ class Message(models.Model):
     is_edited = models.BooleanField(default=False)
 
     objects = models.Manager()  
-    unread_messages = UnreadMessagesManager()  # Custom manager for unread messages
+    unread = UnreadMessagesManager()  # Custom manager for unread messages
     
     def __str__(self):
         return f'Message from {self.sender.username} to {self.receiver.username} - {self.content[:20]}...'

@@ -68,7 +68,7 @@ def display_unread_messages(request):
 
     # Use the custom manager to get unread messages for the current user
     # The manager's method already applies .only() and .select_related()
-    unread_messages = Message.unread_manager.unread_for_user(request.user)
+    unread_messages = Message.unread.unread_for_user(request.user)
 
     # Serialize the data for the response
     # We can only access the fields specified in .only() in the manager
