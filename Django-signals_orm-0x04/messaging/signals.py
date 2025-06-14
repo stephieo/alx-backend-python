@@ -2,9 +2,10 @@
  for the different builtin model, request or authentication signals"""
 
 from .models import Message, Notification, User, MessageHistory
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 from django.utils import timezone
+from django.db.models  import Q
 
 
 @receiver(post_save, sender=Message) # this decorator takes the same kwargs as Signal.connect()
@@ -34,3 +35,16 @@ def save_message_history(sender, instance, **kwargs):
             instance.edited_at = timezone.now()
     except Message.DoesNotExist:
         pass
+
+
+@receiver(post_delete, sender=User)
+def delete_related_user_data(sender, instance, **kwargs):
+    #retrieve and delete all messages
+    user_messages = Message.objects.filter(
+        Q(sender=instance)/
+        Q(receiver=instance)
+        ).delete()
+    # and notifs
+    user_notifs = Notification.objects.filter(user_id=instance).delete()
+    # and msg history
+    user_msg_history = MessageHistory.objects.filter(edited_by=instance).delete()
