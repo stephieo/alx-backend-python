@@ -60,3 +60,25 @@ def display_message_thread(request, message_id):
     return Response(data)
 
 
+@api_view(['GET'])
+def display_unread_messages(request):
+    
+    if not request.user.is_authenticated:
+        return Response({"error": "Authentication required."}, status=401)
+
+    # Use the custom manager to get unread messages for the current user
+    # The manager's method already applies .only() and .select_related()
+    unread_messages = Message.unread_manager.get_unread_for_user(request.user)
+
+    # Serialize the data for the response
+    # We can only access the fields specified in .only() in the manager
+    response_data = []
+    for msg in unread_messages:
+        response_data.append({
+            "message_id": msg.message_id,
+            "sender_username": msg.sender.username, # Efficient due to select_related
+            "content": msg.content,
+            "timestamp": msg.timestamp,
+        })
+
+    return Response(response_data)

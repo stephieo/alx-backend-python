@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from .managers import UnreadMessagesManager
 # TODO:I've only focused on signal implementation here. Need to import previous stuff done from either middleware or messagingapp projects.
 
 # Create your models here.
@@ -27,9 +28,11 @@ class Message(models.Model):
     edited_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     is_sent = models.BooleanField(default=True)
     is_delivered = models.BooleanField(default=False)
-    is_read = models.BooleanField(default=False)
+    unread = models.BooleanField(default=True)
     is_edited = models.BooleanField(default=False)
 
+    objects = models.Manager()  
+    unread_messages = UnreadMessagesManager()  # Custom manager for unread messages
     
     def __str__(self):
         return f'Message from {self.sender.username} to {self.receiver.username} - {self.content[:20]}...'
