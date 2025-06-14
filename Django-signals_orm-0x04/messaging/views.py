@@ -15,10 +15,13 @@ def delete_user(request):
 @cache_page(60)
 @api_view(['GET'])
 def display_conversation_msgs(request, conversation_id):
-    messages = Message.objects.filter(
-        sender=request.user,
-        conversation_id=conversation_id).order_by('timestamp')
-    
+    messages = (
+        Message.objects
+        .filter(sender=request.user, conversation_id=conversation_id)
+        .select_related('sender', 'receiver')
+        .prefetch_related('replies')
+        .order_by('timestamp')
+    )
     if not messages:
         return Response({"error": "No messages found for this conversation."}, status=404)
     data = [
