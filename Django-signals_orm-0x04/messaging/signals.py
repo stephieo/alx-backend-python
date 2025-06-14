@@ -1,11 +1,13 @@
 """ This file is basically used to  define reciever functions
  for the different builtin model, request or authentication signals"""
 
-from .models import Message, Notification, User
-from django.db.models.signals import post_save
+from .models import Message, Notification, User, MessageHistory
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.utils import timezone
 
-@receiver(post_save, sender=Message) # this decorator ale the same kwargs as Signal.connect()
+
+@receiver(post_save, sender=Message) # this decorator takes the same kwargs as Signal.connect()
 def send_message_notification(sender, instance, created, **kwargs): # the arguments of a reciever depend on what the signal sends
     """ so this function is a reciever that listens
       for a post_save signal from the Message model 
@@ -15,4 +17,20 @@ def send_message_notification(sender, instance, created, **kwargs): # the argume
               user=instance.receiver,
               message=f"new message from {instance.sender.username}: {instance.content[:20]}"
          )
-         print(f"Notification created for {instance.reciever.username} for message {instance.message_id}")
+         print(f"Notification created for {instance.receiver.username} for message {instance.message_id}")
+
+
+@receiver(pre_save, sender=Message)
+def save_message_history(sender, instance, **kwargs):
+    try:
+        saved_msg = Message.objects.get(pk=instance.pk)
+        if saved_msg and instance.content != saved_msg.content:
+            MessageHistory.objects.create(
+                user=instance.sender,
+                message=instance,
+                old_message_version= saved_msg.content,
+            )
+            instance.is_edited = True
+            instance.edited_at = timezone.now()
+    except Message.DoesNotExist:
+        pass

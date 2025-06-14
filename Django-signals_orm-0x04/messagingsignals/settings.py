@@ -1,3 +1,6 @@
+
+# TODO:I've only focused on signal implementation here. Need to import previous stuff done from either middleware or messagingapp projects.
+
 """
 Django settings for messagingsignals project.
 
@@ -105,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos'
 
 USE_I18N = True
 
