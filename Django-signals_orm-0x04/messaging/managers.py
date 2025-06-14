@@ -1,7 +1,7 @@
 from django.db import models
 
 class UnreadMessagesManager(models.Manager):
-    def get_unread_for_user(self, user_instance):
+    def unread_for_user(self, user_instance):
         """
         Retrieves messages that are marked as unread for the given user,
         where the user is the receiver.
