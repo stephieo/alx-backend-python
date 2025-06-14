@@ -22,6 +22,8 @@ class Message(models.Model):
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    parent_message = models.ForeignKey('self', on_delete=models.CASCADE,
+                                        null=True, blank=True, related_name='replies')
     edited_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     is_sent = models.BooleanField(default=True)
     is_delivered = models.BooleanField(default=False)
