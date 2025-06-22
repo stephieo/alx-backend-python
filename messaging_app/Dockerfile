@@ -6,8 +6,7 @@ COPY . /messaging_app/
 WORKDIR /messaging_app
 
 #update the image and  install python and pip
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip
+RUN apt-get update
 
 #install all the needed dependencies
 RUN pip install -r requirements.txt

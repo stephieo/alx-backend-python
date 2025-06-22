@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+
+  web:
+    image: messaging_app
+    build: .
+    ports:
+      - "8000:8000"
+  db:
+    image: mysql:8.0
+    env_file: .dockerenv
+    environment:
+      -MYSQL_DB: ${MYSQL_DB}
+      -MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWOR}
+      -MYSQL_USER: ${MYSQL_USER}
+      -MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    
+
+
+    
